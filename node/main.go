@@ -145,7 +145,7 @@ func handleSend(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	receiver, err := ethtypes.EthAddressFromHex(data.Receiver)
+	receiver, err := ethtypes.ParseEthAddress(data.Receiver)
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return
@@ -197,7 +197,7 @@ func handleSend(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	_ctx, cancel := context.WithTimeout(context.Background(), 10 * time.Hour)
+	_ctx, cancel := context.WithTimeout(context.Background(), 10*time.Hour)
 	ctx = _ctx
 	defer cancel()
 
