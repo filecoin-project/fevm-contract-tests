@@ -116,9 +116,9 @@ commands:
       - run: openssl rand -hex 32 >> .env
 
 jobs:
-  ethersjs:
+  ethersjs_and_web3js:
     description: |
-      Run ethers.js integration tests
+      Run ethers.js and web3.js integration tests
     parameters: &test-params
       executor:
         type: executor
@@ -155,4 +155,15 @@ workflows:
   version: 2.1
   ci:
     jobs:
-      - ethersjs
+      - ethersjs_and_web3js
+
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - ethersjs_and_web3js
