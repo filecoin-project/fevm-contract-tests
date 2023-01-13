@@ -48,9 +48,7 @@ func initKit() {
 
 func killKit(ctx context.Context) {
 	if node.Ready {
-		// node.FullNode.Stop(ctx)
 		node.FullNode = nil
-		// node.Miner.Stop(ctx)
 		node.Miner = nil
 		node.Ready = false
 	}
@@ -117,10 +115,6 @@ func handleUrls(w http.ResponseWriter, req *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(output)
-}
-
-func handleKill(w http.ResponseWriter, req *http.Request) {
-	killKit(ctx)
 }
 
 func handleSend(w http.ResponseWriter, req *http.Request) {
@@ -204,10 +198,9 @@ func main() {
 	http.HandleFunc("/ready", handleReady)
 	http.HandleFunc("/restart", handleRestart)
 	http.HandleFunc("/urls", handleUrls)
-	http.HandleFunc("/kill", handleKill)
 	http.HandleFunc("/send", handleSend)
 
-	go initKit()
+	initKit()
 
 	http.ListenAndServe(":8090", nil)
 }

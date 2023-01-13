@@ -85,16 +85,6 @@ commands:
           key: 'v26-2k-lotus-params'
           paths:
             - /var/tmp/filecoin-proof-parameters/
-  install_ipfs:
-    steps:
-      - run: |
-          curl -O https://dist.ipfs.tech/kubo/v0.16.0/kubo_v0.16.0_linux-amd64.tar.gz
-          tar -xvzf kubo_v0.16.0_linux-amd64.tar.gz
-          pushd kubo
-          sudo bash install.sh
-          popd
-          rm -rf kubo
-          rm kubo_v0.16.0_linux-amd64.tar.gz
   git_fetch_all_tags:
     steps:
       - run:
