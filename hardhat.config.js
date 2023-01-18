@@ -2,49 +2,10 @@ require('dotenv').config()
 require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-web3')
 require('@nomicfoundation/hardhat-chai-matchers')
-const request = require("sync-request");
-const { ethers } = require("ethers");
-
-/** @type import('hardhat/config').HardhatUserConfig */
 
 const defaultNodeUrl = "http://localhost:1234/rpc/v0";
 
-// Setup testing environment
-const nodeManagerUrl = "http://localhost:8090";
-
-var nodeUrl;
-if (process.argv.includes("itest")) {
-  try {
-    // create a clean environment for testing
-    var res = JSON.parse(
-      request("POST", nodeManagerUrl + "/restart").getBody()
-    );
-    if (res.ready === false) {
-      throw Error("node is not ready");
-    }
-    nodeUrl =
-      JSON.parse(request("GET", nodeManagerUrl + "/urls").getBody())[
-        "node_url"
-      ] || defaultNodeUrl;
-
-    const address = new ethers.Wallet(process.env.DEPLOYER_PRIVATE_KEY);
-
-    // fund some FIL for testing
-    res = request("POST", nodeManagerUrl + "/send", {
-      json: {
-        receiver: address.address,
-        amount: 10,
-      },
-    });
-    console.log(JSON.parse(res.getBody()));
-  } catch (err) {
-    console.log(
-      `cannot fetch node information from node manager ${nodeManagerUrl}`,
-      err
-    );
-    process.exit(1);
-  }
-}
+const nodeUrl = require('./kit')(1000);
 
 module.exports = {
   solidity: "0.8.15",
