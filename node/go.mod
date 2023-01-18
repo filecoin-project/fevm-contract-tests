@@ -8,7 +8,7 @@ replace github.com/filecoin-project/filecoin-ffi => ./extern/lotus/extern/fileco
 
 require (
 	github.com/filecoin-project/lotus v0.0.0-00010101000000-000000000000
-	github.com/multiformats/go-multiaddr v0.7.0
+	github.com/multiformats/go-multiaddr v0.8.0
 )
 
 require (
@@ -76,7 +76,7 @@ require (
 	github.com/filecoin-project/go-legs v0.4.4 // indirect
 	github.com/filecoin-project/go-padreader v0.0.1 // indirect
 	github.com/filecoin-project/go-paramfetch v0.0.4 // indirect
-	github.com/filecoin-project/go-state-types v0.10.0-alpha-9 // indirect
+	github.com/filecoin-project/go-state-types v0.10.0-alpha-10 // indirect
 	github.com/filecoin-project/go-statemachine v1.0.2 // indirect
 	github.com/filecoin-project/go-statestore v0.2.0 // indirect
 	github.com/filecoin-project/go-storedcounter v0.1.0 // indirect
