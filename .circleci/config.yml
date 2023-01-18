@@ -165,6 +165,8 @@ jobs:
           command: ./node/bin/node
           background: true
       - run:
+          command: cp .env ./extern/fevm-uniswap-v3-core/
+      - run:
           command: cd ./extern/fevm-uniswap-v3-core/ && yarn
       - run:
           command: cd ./extern/fevm-uniswap-v3-core/ && npx hardhat --network itest test || true
