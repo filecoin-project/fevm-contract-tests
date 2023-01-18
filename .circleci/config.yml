@@ -174,6 +174,7 @@ workflows:
   ci:
     jobs:
       - ethersjs_and_web3js
+      - uniswap
 
   nightly:
     triggers:
@@ -185,3 +186,4 @@ workflows:
                 - main
     jobs:
       - ethersjs_and_web3js
+      - uniswap
