@@ -160,6 +160,8 @@ jobs:
           command: ./node/bin/node
           background: true
       - run:
+          command: npm install
+      - run:
           command: cp .env ./extern/fevm-uniswap-v3-core/
       - run:
           command: cd ./extern/fevm-uniswap-v3-core/ && yarn
