@@ -14,10 +14,9 @@ function initNode(filAmount) {
       if (res.ready === false) {
         throw Error("node is not ready");
       }
-      const nodeUrl =
-        JSON.parse(request("GET", nodeManagerUrl + "/urls").getBody())[
-          "node_url"
-        ];
+      const nodeUrl = JSON.parse(
+        request("GET", nodeManagerUrl + "/urls").getBody()
+      )["node_url"];
 
       const address = new ethers.Wallet(process.env.DEPLOYER_PRIVATE_KEY);
 

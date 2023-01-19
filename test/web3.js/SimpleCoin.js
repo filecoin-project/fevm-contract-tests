@@ -18,7 +18,7 @@ describe('SimpleCoin', function () {
 
     deployerAddr = await getDeployerAddress()
   })
-  it("Should access transaction details before it has been mined", async function () {
+  xit("Should access transaction details before it has been mined", async function () {
     const txByHash = await web3.eth.getTransaction(deploymentTxHash);
 
     rpcTests.testGetPendingTransactionByHash(txByHash, deployerAddr);

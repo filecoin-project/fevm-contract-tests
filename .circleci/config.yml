@@ -133,13 +133,7 @@ jobs:
       - run:
           command: npm install
       - run:
-          command: npx hardhat --network itest test ./test/web3.js/SimpleCoin.js
-      - run:
-          command: npx hardhat --network itest test ./test/web3.js/ERC20.js
-      - run:
-          command: npx hardhat --network itest test ./test/ethers.js/SimpleCoin.js
-      - run:
-          command: npx hardhat --network itest test ./test/ethers.js/ERC20.js
+          command: npx hardhat --network itest test
   uniswap:
     description: |
       Run uniswap tests
