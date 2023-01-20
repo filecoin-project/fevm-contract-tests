@@ -105,6 +105,8 @@ commands:
     steps:
       - run: echo -n DEPLOYER_PRIVATE_KEY=0x > .env
       - run: openssl rand -hex 32 >> .env
+      - run: echo -n USER_1_PRIVATE_KEY=0x >> .env
+      - run: openssl rand -hex 32 >> .env
 
 jobs:
   ethersjs_and_web3js:
