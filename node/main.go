@@ -34,7 +34,6 @@ func initKit() {
 		kit.MockProofs(),
 		kit.ThroughRPC(),
 		kit.WithCfgOpt(func(cfg *config.FullNode) error {
-			cfg.ActorEvent.EnableRealTimeFilterAPI = true
 			cfg.Fevm.EnableEthRPC = true
 			return nil
 		}),
