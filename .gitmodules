@@ -1,9 +1,15 @@
 [submodule "node/extern/lotus"]
-	path = node/extern/lotus
-	url = https://github.com/filecoin-project/lotus
-	branch = release/v1.20.0
+  path = node/extern/lotus
+  url = https://github.com/filecoin-project/lotus
+  branch = release/v1.20.0
 [submodule "extern/fevm-uniswap-v3-core"]
-	path = extern/fevm-uniswap-v3-core
-	url = https://github.com/DigitalMOB2/fevm-uniswap-v3-core
+  path = extern/fevm-uniswap-v3-core
+  url = https://github.com/DigitalMOB2/fevm-uniswap-v3-core
 [submodule "extern/openzeppelin-contracts"]
-	branch = ci
+  path = extern/openzeppelin-contracts
+  url = https://github.com/filecoin-project/openzeppelin-contracts
+  branch = ci
+[submodule "extern/fevm-hardhat-kit"]
+  path = extern/fevm-hardhat-kit
+  url = https://github.com/filecoin-project/fevm-hardhat-kit
+  branch = ci
