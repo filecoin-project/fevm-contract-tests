@@ -29,7 +29,6 @@ function initNode(filAmount) {
         amount: filAmount,
       },
     });
-    console.log(JSON.parse(res.getBody()));
     return nodeUrl;
   } catch (err) {
     console.log(
@@ -40,4 +39,19 @@ function initNode(filAmount) {
   }
 }
 
-module.exports = initNode;
+function sendFil(accounts, amount) {
+  accounts.forEach((acc) => {
+    res = request("POST", nodeManagerUrl + "/send", {
+      json: {
+        receiver: acc,
+        amount: amount,
+      },
+    });
+    console.log(JSON.parse(res.getBody()));
+  });
+}
+
+module.exports = {
+  initNode,
+  sendFil,
+};

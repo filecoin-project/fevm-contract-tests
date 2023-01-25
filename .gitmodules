@@ -5,3 +5,5 @@
 [submodule "extern/fevm-uniswap-v3-core"]
 	path = extern/fevm-uniswap-v3-core
 	url = https://github.com/DigitalMOB2/fevm-uniswap-v3-core
+[submodule "extern/openzeppelin-contracts"]
+	branch = ci

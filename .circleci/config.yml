@@ -203,6 +203,38 @@ jobs:
           command: cd ./extern/fevm-hardhat-kit/ && yarn
       - run:
           command: cd ./extern/fevm-hardhat-kit/ && npx hardhat --network itest deploy
+  openzeppelin:
+    description: |
+      Run openzeppelin tests
+    parameters: &test-params
+      executor:
+        type: executor
+        default: golang
+      go-test-flags:
+        type: string
+        default: "-timeout 30m"
+        description: Flags passed to go test.
+      target:
+        type: string
+        default: "./..."
+        description: Import paths of packages to be tested.
+    executor: << parameters.executor >>
+    steps:
+      - prepare
+      - run:
+          command: make -C ./node node
+          no_output_timeout: 30m
+      - run:
+          command: ./node/bin/node
+          background: true
+      - run:
+          command: npm install
+      - run:
+          command: cp .env ./extern/openzeppelin-contracts/
+      - run:
+          command: cd ./extern/openzeppelin-contracts/ && npm install
+      - run:
+          command: cd ./extern/openzeppelin-contracts/ && npx hardhat --network itest test
 
 workflows:
   version: 2.1
