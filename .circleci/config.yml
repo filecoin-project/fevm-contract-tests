@@ -230,12 +230,12 @@ jobs:
       - run:
           command: npm install
       - run:
-          ## remove the line of checking
-          command: cd ./extern/openzeppelin-contracts/ && sed -i '/Wrong kind of exception received/d' node_modules/@openzeppelin/test-helpers/src/expectRevert.js
-      - run:
           command: cp .env ./extern/openzeppelin-contracts/
       - run:
           command: cd ./extern/openzeppelin-contracts/ && npm install
+      - run:
+          # remove the line of checking the revert reason
+          command: cd ./extern/openzeppelin-contracts/ && sed -i '/Wrong kind of exception received/d' node_modules/@openzeppelin/test-helpers/src/expectRevert.js
       - run:
           command: cd ./extern/openzeppelin-contracts/ && npx hardhat --network itest test
 
