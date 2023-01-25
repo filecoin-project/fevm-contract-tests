@@ -40,6 +40,9 @@ function initNode(filAmount) {
 }
 
 function sendFil(accounts, amount) {
+  if (!process.argv.includes("itest")) {
+    return;
+  }
   accounts.forEach((acc) => {
     res = request("POST", nodeManagerUrl + "/send", {
       json: {
