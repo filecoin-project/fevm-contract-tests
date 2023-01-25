@@ -242,6 +242,7 @@ workflows:
     jobs:
       - ethersjs_and_web3js
       - uniswap
+      - openzeppelin
 
   nightly:
     triggers:
