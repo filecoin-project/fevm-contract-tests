@@ -128,6 +128,8 @@ jobs:
     steps:
       - prepare
       - run:
+          command: mkdir -p gasreport
+      - run:
           command: make -C ./node node
           no_output_timeout: 30m
       - run:
@@ -137,6 +139,8 @@ jobs:
           command: npm install
       - run:
           command: npx hardhat --network itest test
+      - store_artifacts:
+          path: gasreport
   uniswap:
     description: |
       Run uniswap tests

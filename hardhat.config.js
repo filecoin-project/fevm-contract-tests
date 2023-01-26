@@ -2,6 +2,7 @@ require('dotenv').config()
 require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-web3')
 require('@nomicfoundation/hardhat-chai-matchers')
+require("hardhat-gas-reporter");
 
 const defaultNodeUrl = "http://localhost:1234/rpc/v0";
 
@@ -43,4 +44,8 @@ module.exports = {
       ],
     },
   },
+  gasReporter: {
+    enabled: true,
+    outputFile: './gasreport/gas.txt',
+  }
 };
