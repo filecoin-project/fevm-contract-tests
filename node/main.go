@@ -28,7 +28,7 @@ var node KitNode
 var ctx context.Context
 
 func initKit() {
-	blockTime := 1 * time.Second
+	blockTime := 10 * time.Millisecond
 	full, miner, ens := kit.EnsembleMinimal(
 		&testing.T{},
 		kit.MockProofs(),
