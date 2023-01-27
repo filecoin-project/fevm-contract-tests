@@ -24,4 +24,4 @@ node: submodule gomod dep
 
 clean:
 	make -C $(LOTUS_PATH) clean
-	rm -f ./node
+	rm -rf ./bin
