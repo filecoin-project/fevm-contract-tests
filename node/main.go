@@ -27,8 +27,9 @@ type KitNode struct {
 var node KitNode
 var ctx context.Context
 
-func initKit() {
-	blockTime := 10 * time.Millisecond
+func initKit(blockTimeMs int64) {
+	blockTime := time.Duration(blockTimeMs) * time.Millisecond
+
 	full, miner, ens := kit.EnsembleMinimal(
 		&testing.T{},
 		kit.MockProofs(),
@@ -76,7 +77,23 @@ func handleReady(w http.ResponseWriter, req *http.Request) {
 
 func handleRestart(w http.ResponseWriter, req *http.Request) {
 	killKit(ctx)
-	initKit()
+
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
+
+	var data struct {
+		BlockTimeMs int64 `json:"blockTimeMs"`
+	}
+
+	if err := json.Unmarshal(body, &data); err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
+
+	initKit(data.BlockTimeMs)
 
 	resp := map[string]interface{}{"ready": node.Ready}
 	output, err := json.Marshal(resp)
@@ -200,7 +217,7 @@ func main() {
 	http.HandleFunc("/urls", handleUrls)
 	http.HandleFunc("/send", handleSend)
 
-	initKit()
+	initKit(200)
 
 	http.ListenAndServe(":8090", nil)
 }

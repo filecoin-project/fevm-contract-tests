@@ -6,7 +6,7 @@ require("hardhat-gas-reporter");
 
 const defaultNodeUrl = "http://localhost:1234/rpc/v0";
 
-const nodeUrl = require('./kit').initNode(1000);
+const nodeUrl = require('./kit').initNode(1000, 1000);
 
 module.exports = {
   solidity: "0.8.15",

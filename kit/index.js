@@ -4,14 +4,20 @@ const { ethers } = require("ethers");
 // Setup testing environment
 const nodeManagerUrl = "http://localhost:8090";
 
-function initNode(filAmount) {
+function initNode(filAmount, blockTimeMs) {
   if (!process.argv.includes("itest")) {
     return;
   }
+  blockTimeMs = blockTimeMs || 100; // Use 1s as default block time
+  console.log("init node..., blockTime: ", blockTimeMs)
   try {
     // create a clean environment for testing
     var res = JSON.parse(
-      request("POST", nodeManagerUrl + "/restart").getBody()
+      request("POST", nodeManagerUrl + "/restart", {
+        json: {
+          blockTimeMs: blockTimeMs,
+        },
+      }).getBody()
     );
     if (res.ready === false) {
       throw Error("node is not ready");
