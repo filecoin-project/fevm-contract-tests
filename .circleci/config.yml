@@ -250,6 +250,7 @@ workflows:
       - ethersjs_and_web3js
       - uniswap
       - openzeppelin
+      - fevm-hardhat-kit
 
   nightly:
     triggers:
@@ -263,3 +264,4 @@ workflows:
       - ethersjs_and_web3js
       - uniswap
       - openzeppelin
+      - fevm-hardhat-kit
