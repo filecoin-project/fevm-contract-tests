@@ -202,7 +202,7 @@ jobs:
       - run:
           command: cp .env ./extern/fevm-hardhat-kit/
       - run:
-          command: cd ./extern/fevm-hardhat-kit/ && grep -o "PRIVATE_KEY.*" ./.env >> .env
+          command: cd ./extern/fevm-hardhat-kit/ && grep -o "PRIVATE_KEY.*" ./.env > .tmp && cat .tmp >> .env
       - run:
           command: cd ./extern/fevm-hardhat-kit/ && yarn
       - run:
