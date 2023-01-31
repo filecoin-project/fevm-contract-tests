@@ -46,6 +46,7 @@ module.exports = {
   },
   gasReporter: {
     enabled: true,
+    noColors: true,
     outputFile: './gasreport/gas.txt',
   }
 };

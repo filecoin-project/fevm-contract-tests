@@ -9,7 +9,6 @@ function initNode(filAmount, blockTimeMs) {
     return;
   }
   blockTimeMs = blockTimeMs || 100; // Use 1s as default block time
-  console.log("init node..., blockTime: ", blockTimeMs)
   try {
     // create a clean environment for testing
     var res = JSON.parse(
