@@ -17,7 +17,7 @@ module.exports = {
       accounts: [process.env.DEPLOYER_PRIVATE_KEY],
     },
     itest: {
-      url: nodeUrl + "/rpc/v0",
+      url: nodeUrl + "/rpc/v1",
       accounts: [process.env.DEPLOYER_PRIVATE_KEY],
     },
     hyperspace: {
