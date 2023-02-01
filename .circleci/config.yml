@@ -48,7 +48,6 @@ commands:
             - run: sudo apt-get update
             - run: sudo apt-get install ocl-icd-opencl-dev libhwloc-dev
             - run: sudo apt-get install python-is-python3
-
       - when:
           condition: <<parameters.darwin>>
           steps:

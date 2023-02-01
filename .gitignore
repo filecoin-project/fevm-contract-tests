@@ -4,3 +4,4 @@ artifacts
 cache
 node_modules
 node/bin
+gasreport

@@ -1,7 +1,6 @@
 [submodule "node/extern/lotus"]
   path = node/extern/lotus
   url = https://github.com/filecoin-project/lotus
-  branch = release/v1.20.0
 [submodule "extern/fevm-uniswap-v3-core"]
   path = extern/fevm-uniswap-v3-core
   url = https://github.com/DigitalMOB2/fevm-uniswap-v3-core
