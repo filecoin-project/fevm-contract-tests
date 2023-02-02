@@ -25,7 +25,13 @@ function initNode(filAmount, blockTimeMs) {
       request("GET", nodeManagerUrl + "/urls").getBody()
     )["node_url"];
 
-    const address = new ethers.Wallet(process.env.DEPLOYER_PRIVATE_KEY);
+    let address = "";
+    if (process.env.DEPLOYER_PRIVATE_KEY) {
+       address = new ethers.Wallet(process.env.DEPLOYER_PRIVATE_KEY);
+    } else {
+      console.error("Error: please follow README to prepare .env file!")
+      process.exit(1);
+    }
 
     // fund some FIL for testing
     res = request("POST", nodeManagerUrl + "/send", {
