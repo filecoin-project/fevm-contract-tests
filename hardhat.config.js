@@ -18,18 +18,18 @@ module.exports = {
     },
     itest: {
       url: nodeUrl + "/rpc/v1",
-      accounts: [process.env.DEPLOYER_PRIVATE_KEY],
+      accounts: [process.env.DEPLOYER_PRIVATE_KEY, process.env.USER_1_PRIVATE_KEY],
     },
     hyperspace: {
       url: "http://api.hyperspace.node.glif.io/rpc/v0",
-      accounts: [process.env.DEPLOYER_PRIVATE_KEY],
+      accounts: [process.env.DEPLOYER_PRIVATE_KEY, process.env.USER_1_PRIVATE_KEY],
     },
     wallaby: {
       url: "https://wallaby.node.glif.io/rpc/v0",
       httpHeaders: {
         "Content-Type": "application/json",
       },
-      accounts: [process.env.DEPLOYER_PRIVATE_KEY],
+      accounts: [process.env.DEPLOYER_PRIVATE_KEY, process.env.USER_1_PRIVATE_KEY],
     },
     hardhat: {
       mining: {
@@ -41,6 +41,10 @@ module.exports = {
           privateKey: process.env.DEPLOYER_PRIVATE_KEY,
           balance: "1000000000000000000",
         },
+        {
+          privateKey: process.env.USER_1_PRIVATE_KEY,
+          balance: "1000000000000000000",
+        }
       ],
     },
   },
