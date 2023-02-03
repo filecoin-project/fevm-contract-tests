@@ -21,6 +21,8 @@
     "web3": "^1.8.0"
   },
   "dependencies": {
+    "sinon": "^15.0.1",
+    "sinon-chai": "^3.7.0",
     "sync-request": "^6.1.0"
   }
 }
