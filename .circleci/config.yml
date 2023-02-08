@@ -254,13 +254,12 @@ workflows:
   nightly:
     triggers:
       - schedule:
-          cron: "0 0,6,12,18 * * *"
+          cron: "0 0,8,16 * * *"
           filters:
             branches:
               only:
                 - main
+                - ntwk/hyperspace
     jobs:
       - ethersjs_and_web3js
-      - uniswap
-      - openzeppelin
       - fevm-hardhat-kit
