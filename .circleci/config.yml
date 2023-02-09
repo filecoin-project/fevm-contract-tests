@@ -2,6 +2,7 @@ version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@1.3.2
   docker: circleci/docker@2.1.4
+  slack: circleci/slack@4.12.1
 
 executors:
   golang:
@@ -140,6 +141,11 @@ jobs:
           command: npx hardhat --network itest test
       - store_artifacts:
           path: gasreport
+      - slack/notify:
+          channel: C04NNT3GHFF 
+          event: fail
+          template: basic_fail_1
+
   uniswap:
     description: |
       Run uniswap tests
@@ -206,6 +212,10 @@ jobs:
           command: cd ./extern/fevm-hardhat-kit/ && yarn
       - run:
           command: cd ./extern/fevm-hardhat-kit/ && npx hardhat --network itest deploy
+      - slack/notify:
+          channel: C04NNT3GHFF 
+          event: fail
+          template: basic_fail_1
   openzeppelin:
     description: |
       Run openzeppelin tests
@@ -241,6 +251,10 @@ jobs:
           command: cd ./extern/openzeppelin-contracts/ && sed -i '/Wrong kind of exception received/d' node_modules/@openzeppelin/test-helpers/src/expectRevert.js
       - run:
           command: cd ./extern/openzeppelin-contracts/ && npx hardhat --network itest test
+      - slack/notify:
+          channel: C04NNT3GHFF 
+          event: fail
+          template: basic_fail_1
 
 workflows:
   version: 2.1
