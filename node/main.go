@@ -12,6 +12,8 @@ import (
 
 	"github.com/multiformats/go-multiaddr"
 
+	"github.com/filecoin-project/go-state-types/network"
+	"github.com/filecoin-project/lotus/chain/stmgr"
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/lotus/chain/types/ethtypes"
 	"github.com/filecoin-project/lotus/itests/kit"
@@ -34,6 +36,10 @@ func initKit(blockTimeMs int64) {
 		&testing.T{},
 		kit.MockProofs(),
 		kit.ThroughRPC(),
+		kit.UpgradeSchedule(stmgr.Upgrade{
+			Network: network.Version19,
+			Height:  -1,
+		}),
 		kit.WithCfgOpt(func(cfg *config.FullNode) error {
 			cfg.Fevm.EnableEthRPC = true
 			return nil

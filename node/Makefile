@@ -5,7 +5,7 @@ LOTUS_PATH:=extern/lotus
 GOCC?=go
 
 submodule:
-	git submodule set-branch -b release/v1.20.0 node/extern/lotus
+	git submodule set-branch -b raulk/hyperspace-nv20-migration node/extern/lotus
 	git submodule sync
 	git submodule update --init --recursive --remote
 
