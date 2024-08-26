@@ -14,7 +14,7 @@ submodule:
 
 gomod:
 	@echo "module github.com/filecoin-project/fevm-contract-tests/node" > go.mod
-	@echo "go 1.21" >> go.mod
+	@echo "go 1.22" >> go.mod
 	@echo "replace github.com/filecoin-project/lotus => ./extern/lotus" >> go.mod
 	@echo "replace github.com/filecoin-project/filecoin-ffi => ./extern/lotus/extern/filecoin-ffi" >> go.mod
 	go mod tidy

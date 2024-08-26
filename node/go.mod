@@ -1,6 +1,6 @@
 module github.com/filecoin-project/fevm-contract-tests/node
 
-go 1.21
+go 1.22
 
 replace github.com/filecoin-project/lotus => ./extern/lotus
 
