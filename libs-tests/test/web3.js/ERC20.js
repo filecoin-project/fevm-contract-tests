@@ -16,7 +16,7 @@ const TOKEN_INITIAL_SUPPLY = 1000;
 
 let deployerAddr, erc20;
 
-describe("ERC20", function () {
+describe("web3.js ERC20", function () {
   it("Should successfully deploy", async function () {
     deployerAddr = await getDeployerAddress();
     const { contract } = await deployContract(
@@ -68,7 +68,7 @@ describe("ERC20", function () {
     const spy0 = sinon.spy();
     const subscription = wsWeb3.eth.subscribe("newBlockHeaders");
     subscription.on("data", (block) => {
-      Formatter.check(new Formatter().formats.block, block);
+      Formatter.check(new Formatter().formats.blockWithTransactions, block);
       spy0();
     });
 

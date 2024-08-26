@@ -1,13 +1,12 @@
 require('dotenv').config()
 const fa = require('@glif/filecoin-address')
-const { ethers } = require('hardhat')
-const { utils, BigNumber, Wallet } = require('hardhat').ethers
+const { utils, BigNumber, Wallet, provider } = require('hardhat').ethers
 
 const DEPLOYER_PRIVATE_KEY = process.env.DEPLOYER_PRIVATE_KEY
 
 const isFilecoinNetwork = async () => {
   try {
-    await ethers.provider.send('Filecoin.Version', [])
+    await provider.send('Filecoin.Version', [])
     return true
   } catch (e) {
     return false

@@ -9,7 +9,7 @@ let deployerAddr, deploymentTxHash, simpleCoin, simpleCoinDeployment,
   deploymentBlockHash, deploymentBlockNumber, simpleCoinAddress
 const otherAddress = '0xff000000000000000000000000000000deadbeef'
 
-describe('SimpleCoin', function () {
+describe('web3.js SimpleCoin', function () {
   it('Should send deployment transaction', async function () {
     const { contract, txHash } = await deployContract('SimpleCoin')
 

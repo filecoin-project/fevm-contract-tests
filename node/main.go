@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -18,18 +19,23 @@ import (
 	"github.com/filecoin-project/lotus/node/config"
 )
 
+const DefaultListenAddress = ":8090"
+
 type KitNode struct {
 	FullNode *kit.TestFullNode
 	Miner    *kit.TestMiner
 	Ready    bool
 }
 
-var node KitNode
-var ctx context.Context
+var (
+	node KitNode
+	ctx  context.Context
+)
 
 func initKit(blockTimeMs int64) {
 	blockTime := time.Duration(blockTimeMs) * time.Millisecond
 
+	testing.Init()
 	full, miner, ens := kit.EnsembleMinimal(
 		&testing.T{},
 		kit.MockProofs(),
@@ -47,7 +53,7 @@ func initKit(blockTimeMs int64) {
 	node.Ready = true
 }
 
-func killKit(ctx context.Context) {
+func killKit() {
 	if node.Ready {
 		node.FullNode = nil
 		node.Miner = nil
@@ -76,7 +82,7 @@ func handleReady(w http.ResponseWriter, req *http.Request) {
 }
 
 func handleRestart(w http.ResponseWriter, req *http.Request) {
-	killKit(ctx)
+	killKit()
 
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
@@ -219,5 +225,9 @@ func main() {
 
 	initKit(200)
 
-	http.ListenAndServe(":8090", nil)
+	listenAddress := DefaultListenAddress
+	if osListenAddress := os.Getenv("LISTEN"); osListenAddress != "" {
+		listenAddress = osListenAddress
+	}
+	http.ListenAndServe(listenAddress, nil)
 }
