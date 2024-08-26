@@ -1,7 +1,7 @@
 const chai = require("chai");
-const expect = chai.expect;
 const sinon = require("sinon");
 const sinonChai = require("sinon-chai");
+const { expect } = chai;
 chai.should();
 chai.use(sinonChai);
 
@@ -9,17 +9,13 @@ const { ethers } = require("hardhat");
 const deployContract = require("./utils/deployContract");
 const { getDeployerAddress } = require("./utils/getDeployerAddresses");
 
-const WebSocket = require("ws");
-
-const { Formatter } = require("@ethersproject/providers");
-
 const TOKEN_NAME = "my_token";
 const TOKEN_SYMBOL = "TKN";
 const TOKEN_INITIAL_SUPPLY = 1000;
 
 let deployerAddr, deploymentTxHash, erc20Address;
 
-describe("ERC20", function () {
+describe("ethers.js ERC20", function () {
   it("Should successfully deploy", async function () {
     deployerAddr = await getDeployerAddress();
     const erc20 = await deployContract(
@@ -29,9 +25,7 @@ describe("ERC20", function () {
       TOKEN_INITIAL_SUPPLY,
       deployerAddr
     );
-
     deploymentTxHash = erc20.deployTransaction.hash;
-    console.log("hash", deploymentTxHash);
 
     await erc20.deployed();
   });
@@ -78,7 +72,7 @@ describe("ERC20", function () {
     const wsUrl = hre.network.config.url.replace("http", "ws");
     const wsProvider = new ethers.providers.WebSocketProvider(wsUrl);
 
-    function transferEventAssertFunc(event) {
+    transferEventAssertFunc = (event) => {
       event.address.should.equal(erc20Address);
       event.topics[0].should.equal(
         ethers.utils.id("Transfer(address,address,uint256)")
@@ -194,6 +188,8 @@ describe("ERC20", function () {
     spy7.should.have.been.calledOnce;
     spy8.should.not.have.been.called;
     spy9.should.have.been.calledOnce;
+
+    await wsProvider.destroy();
   });
 });
 

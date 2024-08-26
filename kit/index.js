@@ -1,65 +1,66 @@
-const request = require("sync-request");
-const { ethers } = require("ethers");
+const request = require('sync-request')
+const { ethers } = require('ethers')
 
 // Setup testing environment
-const nodeManagerUrl = "http://localhost:8090";
+const NODE_MANAGER_URL = 'http://localhost:8090'
 
-function initNode(filAmount, blockTimeMs) {
-  if (!process.argv.includes("itest")) {
-    return;
+function postRequest (url, data) {
+  const res = request('POST', NODE_MANAGER_URL + url, { json: data })
+  const body = JSON.parse(res.getBody())
+  return body
+}
+
+function getRequest (url) {
+  const res = request('GET', NODE_MANAGER_URL + url)
+  const body = JSON.parse(res.getBody())
+  return body
+}
+
+function initNode (filAmount, blockTimeMs) {
+  if (!process.argv.includes('itest')) {
+    return
   }
-  blockTimeMs = blockTimeMs || 100; // Use 1s as default block time
+  blockTimeMs = blockTimeMs || 100 // Use 1s as default block time
   try {
     // create a clean environment for testing
-    var res = JSON.parse(
-      request("POST", nodeManagerUrl + "/restart", {
-        json: {
-          blockTimeMs: blockTimeMs,
-        },
-      }).getBody()
-    );
+    console.log('Resetting Lotus node with block time:', blockTimeMs)
+    const res = postRequest('/restart', { blockTimeMs })
     if (res.ready === false) {
-      throw Error("node is not ready");
+      throw Error('node is not ready')
     }
-    const nodeUrl = JSON.parse(
-      request("GET", nodeManagerUrl + "/urls").getBody()
-    )["node_url"];
 
-    const address = new ethers.Wallet(process.env.DEPLOYER_PRIVATE_KEY);
+    const nodeUrl = getRequest('/urls').node_url
 
     // fund some FIL for testing
-    res = request("POST", nodeManagerUrl + "/send", {
-      json: {
-        receiver: address.address,
-        amount: filAmount,
-      },
-    });
-    return nodeUrl;
-  } catch (err) {
-    console.log(
-      `cannot fetch node information from node manager ${nodeManagerUrl}`,
-      err
-    );
-    process.exit(1);
+    console.log('Setting up new wallet for:', process.env.DEPLOYER_PRIVATE_KEY)
+    const address = new ethers.Wallet(process.env.DEPLOYER_PRIVATE_KEY)
+    sendFil([address.address], filAmount)
+
+    console.log(`Finished setup, Node RPC endpoint: ${nodeUrl}`)
+    return nodeUrl
+  } catch (error) {
+    console.error('Error initializing node:', error)
   }
 }
 
-function sendFil(accounts, amount) {
-  if (!process.argv.includes("itest")) {
-    return;
+function sendFil (accounts, amount) {
+  if (!process.argv.includes('itest')) {
+    return
   }
-  accounts.forEach((acc) => {
-    res = request("POST", nodeManagerUrl + "/send", {
-      json: {
-        receiver: acc,
-        amount: amount,
-      },
-    });
-    console.log(JSON.parse(res.getBody()));
-  });
+  accounts.forEach((receiver) => {
+    const res = postRequest('/send', {
+      receiver,
+      amount
+    })
+    if (res.error) {
+      console.error(res.error)
+      process.exit(1)
+    }
+    console.log(`Sent ${amount} to ${receiver}`)
+  })
 }
 
 module.exports = {
   initNode,
-  sendFil,
-};
+  sendFil
+}

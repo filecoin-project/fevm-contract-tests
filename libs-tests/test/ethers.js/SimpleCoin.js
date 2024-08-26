@@ -10,7 +10,7 @@ let deployerAddr, deploymentTxHash, deploymentBlockHash,
   deploymentBlockNumber, simpleCoinAddress
 const otherAddress = '0xff000000000000000000000000000000deadbeef'
 
-describe('SimpleCoin', function () {
+describe('ethers.js SimpleCoin', function () {
   it("Should send deployment transaction", async function () {
     const simpleCoin = await deployContract("SimpleCoin");
 

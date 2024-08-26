@@ -1,0 +1,13 @@
+{
+  "name": "lotus-testkit",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "author": "",
+  "license": "Apache-2.0",
+  "description": "",
+  "dependencies": {
+    "ethers": "^5.7.2",
+    "sync-request": "^6.1.0"
+  }
+}
