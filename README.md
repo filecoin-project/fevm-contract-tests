@@ -43,7 +43,7 @@ This will execute the suite of tests across each of:
 
    ```expect(actualError).to.equal(expectedError, 'Wrong kind of exception received');```
 
-2. fevm-uniswap-v3-core uses jest-snapshot to generate and store snapshots of gas costs of common operations. These may change with network upgrades so may need to be re-generated and updated in the parent repository.
+2. fevm-uniswap-v3-core uses jest-snapshot to generate and store snapshots of gas costs of common operations. These may change with network upgrades so may need to be re-generated and updated in the parent repository. Simply remove the `test/__snapshots__` directory, re-run the tests with a newer version of Lotus and commit the new files ot the fevm-uniswap-v3-core repository.
 
 3. By default, ethers.js uses a block-time (`pollingInterval`) of 4s. This can be configured, but use of ethers.js mediated through Hardhat prevents overriding of this value; this means that even if we set a much shorter block-time in our local Lotus node, the ethers.js tests will still wait at least 4s before checking the results of transactions. This is fixed here in the `Makefile` `fix-hardhat` target by editing the Hardhat ethers.js wrapper to hard-write in a shorter `pollingInterval` value.
 

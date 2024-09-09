@@ -1,8 +1,11 @@
 .PHONY: fix-hardhat fix-fevm-hardhat-config generate-env build-lotus-runner start-lotus-runner \
 	install-kit install-libs install-fevm-hardhat install-openzeppelin install-uniswap-v3-core \
-	install test-libs test-fevm-hardhat test-openzeppelin test-uniswap-v3-core test
+	install test-libs test-fevm-hardhat test-openzeppelin test-uniswap-v3-core test clean all
 
 SHELL=/usr/bin/env bash
+
+default:
+	@echo "See the README for usage"
 
 # Ethers.js offers a pollingInterval option on a Provider to change the default from 4s.
 # Unfortunately, Hardhat obscures that behind a proxy and doesn't allow a way to modify it. We can
@@ -17,9 +20,13 @@ fix-hardhat:
 	escaped_insert_line=$$(printf '%s\n' "$$insert_line" | sed 's/[][\/.^$$*]/\\&/g'); \
 	polling_interval_pattern="    initialProvider.pollingInterval ="; \
 	for file_path in $${file_paths[@]}; do \
-		if ! grep -q "$$polling_interval_pattern" "$$file_path"; then \
-			sed -i "/$$escaped_search_line/a\\ $$insert_line" "$$file_path"; \
-			echo "Hardhat / ethers polling interval set to 200ms in $$file_path"; \
+		if [ -f "$$file_path" ]; then \
+			if ! grep -q "$$polling_interval_pattern" "$$file_path"; then \
+				sed -i "/$$escaped_search_line/a\\ $$insert_line" "$$file_path"; \
+				echo "Hardhat / ethers polling interval set to 200ms in $$file_path"; \
+			fi \
+		else \
+			echo "File $$file_path does not exist, skipping"; \
 		fi \
 	done
 
@@ -37,7 +44,7 @@ fix-fevm-hardhat-config:
 			echo "Inserted itest network configuration in $$config_file"; \
 	fi
 
-generate-env:
+.env:
 	@echo "DEPLOYER_PRIVATE_KEY=0x$$(openssl rand -hex 32)" > .env
 	@echo "USER_1_PRIVATE_KEY=0x$$(openssl rand -hex 32)" >> .env
 	@cp .env ./libs-tests/
@@ -47,55 +54,79 @@ generate-env:
 	@cp .env ./extern/fevm-uniswap-v3-core/
 	@echo ".env file generated and copied to necessary directories"
 
-build-lotus-runner:
+generate-env: .env
+
+node/bin/node:
 	$(MAKE) -C ./node node
 
-start-lotus-runner:
+build-lotus-runner: node/bin/node
+
+start-lotus-runner: build-lotus-runner
 	$(MAKE) -C ./node start
 
 install-kit:
 	cd kit && npm install
 
-install-libs: generate-env
+libs-tests/node_modules:
 	(cd libs-tests && \
 	npm install)
 
-install-fevm-hardhat: generate-env
+install-libs: libs-tests/node_modules generate-env
+
+extern/fevm-hardhat-kit/node_modules:
 	(cd extern/fevm-hardhat-kit && \
 	npm install --force)
 
-install-openzeppelin: generate-env
-	(cd extern/openzeppelin-contracts && \
-	npm install)
+install-fevm-hardhat: extern/fevm-hardhat-kit/node_modules generate-env
 
-install-uniswap-v3-core: generate-env
+extern/fevm-uniswap-v3-core/node_modules:
 	(cd extern/fevm-uniswap-v3-core && \
 	npm install --force && \
 	npm install bignumber.js@9)
 
+install-uniswap-v3-core: extern/fevm-uniswap-v3-core/node_modules generate-env
+
+extern/openzeppelin-contracts/node_modules:
+	(cd extern/openzeppelin-contracts && \
+	npm install)
+
+install-openzeppelin: extern/openzeppelin-contracts/node_modules generate-env
+
 install: install-kit install-libs install-fevm-hardhat install-openzeppelin install-uniswap-v3-core
 
-test-libs: fix-hardhat
+test-libs: install-libs fix-hardhat
 	(cd libs-tests && \
 	npm exec -c "hardhat clean" && \
 	npm exec -c "hardhat --network itest test")
 
 # just a deploy, no tests to run
-test-fevm-hardhat: fix-hardhat fix-fevm-hardhat-config
+test-fevm-hardhat: install-fevm-hardhat fix-hardhat fix-fevm-hardhat-config
 	(cd extern/fevm-hardhat-kit && \
 	rm -rf deployments/ && \
 	npm exec -c "hardhat clean" && \
 	npm exec -c "hardhat --network itest deploy")
 
-test-openzeppelin: fix-hardhat
+test-uniswap-v3-core: install-uniswap-v3-core fix-hardhat
+	(cd extern/fevm-uniswap-v3-core && \
+	npm exec -c "hardhat clean" && \
+	npm exec -c "hardhat --network itest test")
+
+test-openzeppelin: install-openzeppelin fix-hardhat
 	(cd extern/openzeppelin-contracts && \
 	npm exec -c "hardhat clean" && \
 	npm exec -c "hardhat --network itest test")
 
-test-uniswap-v3-core: fix-hardhat
-	(cd extern/fevm-uniswap-v3-core && \
-	rm -rf test/__snapshots__/ && \ # TODO: generate new snapshots upstream
-	npm exec -c "hardhat clean" && \
-	npm exec -c "hardhat --network itest test")
+test: test-libs test-fevm-hardhat test-uniswap-v3-core test-openzeppelin
 
-test: test-libs test-fevm-hardhat test-openzeppelin test-uniswap-v3-core
+clean:
+	@rm -rf .env
+	@rm -rf libs-tests/.env
+	@rm -rf libs-tests/node_modules/
+	@rm -rf extern/fevm-hardhat-kit/.env
+	@rm -rf extern/fevm-hardhat-kit/node_modules/
+	@rm -rf extern/fevm-uniswap-v3-core/.env
+	@rm -rf extern/fevm-uniswap-v3-core/node_modules/
+	@rm -rf extern/openzeppelin-contracts/.env
+	@rm -rf extern/openzeppelin-contracts/node_modules/
+	@$(MAKE) -C ./node clean
+	@echo "Cleaned up"
