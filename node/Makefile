@@ -27,4 +27,4 @@ start:
 
 clean:
 	make -C $(LOTUS_PATH) clean
-	rm -f ./bin
+	rm -rf ./bin
