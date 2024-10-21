@@ -81,8 +81,7 @@ install-fevm-hardhat: extern/fevm-hardhat-kit/node_modules generate-env
 
 extern/fevm-uniswap-v3-core/node_modules:
 	(cd extern/fevm-uniswap-v3-core && \
-	npm install --force && \
-	npm install bignumber.js@9)
+	npm install --force)
 
 install-uniswap-v3-core: extern/fevm-uniswap-v3-core/node_modules generate-env
 
