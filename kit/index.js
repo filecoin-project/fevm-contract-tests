@@ -32,9 +32,11 @@ function initNode (filAmount, blockTimeMs) {
     const nodeUrl = getRequest('/urls').node_url
 
     // fund some FIL for testing
-    console.log('Setting up new wallet for:', process.env.DEPLOYER_PRIVATE_KEY)
-    const address = new ethers.Wallet(process.env.DEPLOYER_PRIVATE_KEY)
-    sendFil([address.address], filAmount)
+    // fund both wallets to avoid unknown-actor problems when transacting,
+    // see https://github.com/filecoin-project/lotus/issues/12441
+    const wallets = [process.env.DEPLOYER_PRIVATE_KEY, process.env.USER_1_PRIVATE_KEY]
+    console.log('Setting up new wallets for: %s and %s', ...wallets)
+    sendFil(wallets.map((key) => (new ethers.Wallet(key).address)), filAmount)
 
     console.log(`Finished setup, Node RPC endpoint: ${nodeUrl}`)
     return nodeUrl

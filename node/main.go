@@ -35,6 +35,8 @@ var (
 func initKit(blockTimeMs int64) {
 	blockTime := time.Duration(blockTimeMs) * time.Millisecond
 
+	os.Setenv("LOTUS_DISABLE_F3", "1")
+
 	testing.Init()
 	full, miner, ens := kit.EnsembleMinimal(
 		&testing.T{},

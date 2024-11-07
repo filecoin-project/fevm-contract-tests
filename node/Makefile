@@ -19,7 +19,7 @@ gomod:
 	@echo "replace github.com/filecoin-project/filecoin-ffi => ./extern/lotus/extern/filecoin-ffi" >> go.mod
 	go mod tidy
 
-node: submodule gomod
+node: gomod
 	$(GOCC) build -o bin/node ./main.go
 
 start:
